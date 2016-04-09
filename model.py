@@ -16,13 +16,13 @@ class ParkSession(db.Model):
 def connect_to_db(app):
     """Connect the database to Flask app."""
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///wwm'  # weekend wanderlust map
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///parkingbuddy'  # weekend wanderlust map
     db.app = app
     db.init_app(app)
 
 if __name__ == "__main__":
     # Allows interactive querying in the shell
 
-    from server import app
+    from app import app
     connect_to_db(app)
     print "Connected to DB."
