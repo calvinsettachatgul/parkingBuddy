@@ -1,5 +1,9 @@
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from model import connect_to_db, ParkSession
 app = Flask(__name__)
+db = SQLAlchemy(app)
+
 
 @app.route("/")
 def index():
@@ -7,4 +11,5 @@ def index():
 
 if __name__ == "__main__":
   app.debug = False
+  connect_to_db(app)
   app.run()
