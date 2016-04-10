@@ -32,7 +32,7 @@ def load_sessions(file):
 def load_garages(file):
     with open(file) as csvfile:
       csvreader = csv.reader(csvfile)
-      # next(csvreader)
+      next(csvreader)
       for i, row in enumerate(csvreader):
         newGarage = Garage(name=row[0],
                                 lat=row[1],
