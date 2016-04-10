@@ -41,10 +41,10 @@ def get_automatic_json():
   auth = OAuth1(access_client_id, access_secret)
 
 
-  headers = {"Authorization:Bearer": "e5cdd2a2f2c52ac2ff9825f53ac566f45c513991"}
+  headers = {"Authorization": "Bearer: e5cdd2a2f2c52ac2ff9825f53ac566f45c513991"}
 
   # response = requests.get('https://www.example.com').content
-  response = requests.get(url, auth=auth)
+  response = requests.get(url, headers=headers)
 
   print response
 
