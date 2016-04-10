@@ -7,11 +7,13 @@ createdb parkingbuddy
 
 python seed.py
 
-(in another prompt)
-
 python model.py
+
+(in another prompt)
 
 psql parkingbuddy
 
 select * from parkingevents;
+select * from garages;
+
 
