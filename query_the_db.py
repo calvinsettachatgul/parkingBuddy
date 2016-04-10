@@ -1,5 +1,6 @@
 import datetime
 import math
+from model import connect_to_db, ParkingEvent, Garage
 
 # read the garage data
 # class GarageData:
@@ -121,15 +122,15 @@ def get_garage_states():
             #rowtime_dt = datetime.datetime.strptime(timestr,fmt)
             if oneHourBack_dt <= eventTime_dt:
                 # check if within 30 m
-                parkingEventCoord = Coord(float(parkingEvent["lat"]),
-                                          float(parkingEvent["long"]))
+                parkingEventCoord = Coord(float(parkingEvent.lat),
+                                          float(parkingEvent.long))
                 dist_mi = Coord.haversine_distance(garageCoord,
                                                    parkingEventCoord)
                 dist_m = dist_mi * 1609.34
                 if dist_m <= 30:
-                    if parkingEvent["arriveDepart"] == "arrival":
+                    if parkingEvent.arriveDepart == "arrival":
                         sumArrivalHr += 1
-                    if parkingEvent["arriveDepart"] == "departure":
+                    if parkingEvent.arriveDepart == "departure":
                         sumDepartureHr += 1
         diffVehCountHour = sumArrivalHr - sumDepartureHr
         pct_avail = 0
@@ -140,7 +141,7 @@ def get_garage_states():
         if -5 < diffVehCountHour and diffVehCountHour < 5:
             pct_avail = 90 - (diffVehCountHour + 5)*8
         pct_avail = 10 + (i%3)*40
-        pct_avail_by_garage_name[garage["name"]] = pct_avail
+        pct_avail_by_garage_name[garage.name] = pct_avail
 
 
     #rv = json.dumps(pct_avail_by_garage_name)
