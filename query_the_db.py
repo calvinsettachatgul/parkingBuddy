@@ -95,27 +95,31 @@ class Coord:
             rv = True
         return rv
 
-def get_garage_states(gd,ped,currentTime):
+def get_garage_states():
     # for all garages, find their arrival and departure counts in the 
     #  past hour
-    # currentTime is in the iso format "2015-04-12T18:55:01.123Z"
+    # currentTime is in the iso format "2015-04-12T18:55:01.123Z"    
+    parkingEvents = ParkingEvent.query.all()
+    garageList = Garage.query.all()
     pct_avail_by_garage_name = {} # percent availability for each garage by its name
     fmt = "%Y-%m-%d %H:%M:%S"
-    for garage in gd.m:
-        garageCoord = Coord(float(garage["lat"]),
-                            float(garage["long"]))
-        currentTimeStr = currentTime.replace("T"," ")
-        currentTimeStr = currentTimeStr.split(".")[0]
-        currentTime_dt = datetime.datetime.strptime(currentTimeStr,fmt)
+    for i,garage in enumerate(garageList):
+        garageCoord = Coord(garage.lat,
+                            garage.long) # assume that the lat and long are in float already
+        #currentTimeStr = currentTime.replace("T"," ")
+        #currentTimeStr = currentTimeStr.split(".")[0]
+        #currentTime_dt = datetime.datetime.strptime(currentTimeStr,fmt)
+        currentTime_dt = datetime.datetime.now()
         oneHourBack_dt = currentTime_dt - datetime.timedelta(hours=1)    
         sumArrivalHr = 0
         sumDepartureHr = 0
-        for parkingEvent in ped.m:
+        for parkingEvent in parkingEvents:
             # check if within the past hour
-            timestr = parkingEvent["time"].replace("T"," ")
-            timestr = timestr.split(".")[0]
-            rowtime_dt = datetime.datetime.strptime(timestr,fmt)
-            if oneHourBack_dt <= rowtime_dt:
+            eventTimeUnix = parkingEvent.time # a string as pulled from the db
+            eventTime_dt = datetime.datetime.fromtimestamp(long(eventTimeUnix))
+            #timestr = timestr.split(".")[0]
+            #rowtime_dt = datetime.datetime.strptime(timestr,fmt)
+            if oneHourBack_dt <= eventTime_dt:
                 # check if within 30 m
                 parkingEventCoord = Coord(float(parkingEvent["lat"]),
                                           float(parkingEvent["long"]))
@@ -135,8 +139,56 @@ def get_garage_states(gd,ped,currentTime):
             pct_avail = 90
         if -5 < diffVehCountHour and diffVehCountHour < 5:
             pct_avail = 90 - (diffVehCountHour + 5)*8
+        pct_avail = 10 + (i%3)*40        
         pct_avail_by_garage_name[garage["name"]] = pct_avail
+    
+                        
+    #rv = json.dumps(pct_avail_by_garage_name)
+#     outfile = open("/Users/nathan/code/parkingBuddy/garage_pct_avail.csv",'wb')
+#     header = ["Garage Name","pct_avail"]
+#     outfile.write(",".join(header)+"\n")
+#     for i,garage in enumerate(gd.m):
+#         outfile.write(",".join([garage["name"],
+#                                 str(pct_avail_by_garage_name[garage["name"]])]))
+#         if i < len(gd.m)-1:
+#             outfile.write("\n")
+#     outfile.close()
     return pct_avail_by_garage_name
+
+
+@app.route("/garages.geojson")
+def makejson():
+    """Construct geojson for map markers."""
+
+    parkingEvents = ParkingEvent.query.all()
+    garageList = Garage.query.all()
+    score_dict = get_garage_states()
+
+    garage_geojson = {
+                     "type": "FeatureCollection",
+                     "features": [
+                        {
+                         "type": "Feature",
+                         "properties": {
+                            "name": garage.name,
+                            "addr": garage.addr,
+                            "price": garage.price,
+                            "spaces": garage.spaces,
+                            "scores": score_dict[garage.name]
+                            },
+                         "geometry": {
+                            "coordinates": [
+                                garage.long,
+                                garage.lat],
+                                "type": "Point"
+                            }, 
+                         "id": garage.garage_id
+                         }
+                    for garage in garageList
+                    ]
+                }
+    return jsonify(garage_geojson)
+
 
 currentTime = "2015-04-12T18:55:01.123Z"
 pct_avail_by_garage_name = get_garage_states(gd, ped, currentTime)

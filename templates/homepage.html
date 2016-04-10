@@ -282,6 +282,9 @@ L.mapbox.accessToken = 'pk.eyJ1IjoidGVycml3bGVlIiwiYSI6ImNpazZlaThsajAwcXdpMm0yc
 var map = L.mapbox.map('map', 'mapbox.streets')
     .setView([37.80, -122.27], 14);
 
+var garageLayer = L.mapbox.featureLayer().addTo(map);
+garageLayer.loadURL('/garages.geojson');
+
     $("#right").hover(
         function(){ //mouseenter
             document.getElementById("left").style.opacity = ".6";
