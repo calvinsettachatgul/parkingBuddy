@@ -374,6 +374,44 @@ garageLayer.on('mouseover', function(event) {
 
         // $("#wait").css("display", "none");
     })
+
+    function findAddress(results) {
+
+        if (results.status === "no found") {
+        alert("Not found! Try again.");
+        return "Not found! Try again.";
+        }
+
+        var lnglat = results.coordinates;
+        var addressLayer = L.mapbox.featureLayer().addTo(map);
+
+        var newMarker = {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: lnglat
+          },
+          properties: {
+            'title': 'We found it! Click to explore',
+            'marker-color': '#F03C02',
+            'marker-symbol': 'pitch'
+          }
+        };
+
+        addressLayer.setGeoJSON(newMarker).openPopup();
+
+        map.fitBounds(addressLayer.getBounds(), {
+        maxZoom: 14
+        });
+
+    }
+
+
+
+    $("#submit_location").on('click', function() {
+        $.get('/geocode_address', {'address': address}, findAddress);
+    });
+
 </script>
 
 
