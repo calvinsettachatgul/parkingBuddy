@@ -1,9 +1,12 @@
 from flask import Flask, render_template,jsonify,redirect
 from flask_sqlalchemy import SQLAlchemy
 from model import connect_to_db, ParkingEvent, Garage
+from query_the_db import Coord, get_garage_states
 import os
 import requests
 from requests_oauthlib import OAuth1
+import datetime
+import math
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -49,6 +52,39 @@ def get_automatic_json():
   print response
 
   return jsonify({"lat":37.8033345, "long":-122.2695569})
+
+@app.route("/garages.geojson")
+def makejson():
+    """Construct geojson for map markers."""
+
+    parkingEvents = ParkingEvent.query.all()
+    garageList = Garage.query.all()
+    score_dict = get_garage_states()
+
+    garage_geojson = {
+                     "type": "FeatureCollection",
+                     "features": [
+                        {
+                         "type": "Feature",
+                         "properties": {
+                            "name": garage.name,
+                            "addr": garage.addr,
+                            "price": garage.price,
+                            "spaces": garage.spaces,
+                            "scores": score_dict[garage.name]
+                            },
+                         "geometry": {
+                            "coordinates": [
+                                garage.long,
+                                garage.lat],
+                                "type": "Point"
+                            }, 
+                         "id": garage.garage_id
+                         }
+                    for garage in garageList
+                    ]
+                }
+    return jsonify(garage_geojson)
 
 
 if __name__ == "__main__":
