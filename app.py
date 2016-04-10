@@ -69,11 +69,11 @@ def makejson():
 
     for garage in garageList:
       if score_dict[garage.name] <= 10:
-        color = "red"
+        color = "#C70039"
       elif score_dict[garage.name] > 10 and score_dict[garage.name] <= 50:
-        color = "orange"
+        color = "#FF5733"
       else:
-        color = "green"
+        color = "#FFC300"
 
       single_garage_json = {
                          "type": "Feature",
