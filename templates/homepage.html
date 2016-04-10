@@ -228,6 +228,36 @@
     .show {
         display: block;
     }
+
+    .numberbox {
+        display: none;
+        height: 45px;
+        font-size: 14px;
+        padding: 10px;
+        width: 125px;
+        border: 2.5px solid #ff5a5f;
+        /*border-color: #ff5a5f;*/
+        /*border-bottom-color: #e00007;*/
+        background-color: #fff;
+        color: #ff5a5f;
+        margin-top: 5px;
+        margin-left: 5px;
+        /*float: left;*/
+        position: relative;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+
+    }
+
+    .show-numberbox {
+        display: inline-block;
+    }
+
+    #submit_parked {
+        display: none;
+    }
+
     </style>
 </head>
 <body>
@@ -256,7 +286,7 @@
         <p>Just parked?</p>
         <input type="text" class="inputbar" name="level" placeholder="Which floor did you park?"><br>
         <input type="text" class="inputbar" name="expiringtime" placeholder="When are you coming back?">
-        <button class="button" id="submit_parked" type="submit">Remind me</button>
+        <button class="button show" id="submit_parked" type="submit">Remind me</button><input type="text" id="number" class="numberbox" name="number" placeholder="type number and enter">
     </form>
     </div>
     <div id="listing"></div>
@@ -406,10 +436,13 @@ garageLayer.on('mouseover', function(event) {
 
     }
 
-
-
     $("#submit_location").on('click', function() {
         $.get('/geocode_address', {'address': address}, findAddress);
+    });
+
+    $("#submit_parked").on('click', function() {
+        $("#number").addClass("show-numberbox");
+        $("#submit_parked").removeClass = "show";
     });
 
 </script>
