@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from model import connect_to_db, ParkingEvent, Garage
 import os
 import requests
+from requests_oauthlib import OAuth1
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -36,10 +37,21 @@ def get_automatic_json():
   print access_client_id
   print access_secret
 
-  return jsonify({"lat":"hello you got the data"})
+  url = 'https://api.automatic.com/trip/'
+  auth = OAuth1(access_client_id, access_secret)
+
+
+  headers = {"Authorization:Bearer": "e5cdd2a2f2c52ac2ff9825f53ac566f45c513991"}
+
+  # response = requests.get('https://www.example.com').content
+  response = requests.get(url, auth=auth)
+
+  print response
+
+  return jsonify({"lat":37.8033345, "long":-122.2695569})
 
 
 if __name__ == "__main__":
-  app.debug = False
+  app.debug = True
   connect_to_db(app)
   app.run()
