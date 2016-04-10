@@ -13,6 +13,7 @@
         margin: 0px; 
         padding: 0px;
         font-family: "Lato" ;
+        overflow: hidden;
     }
 
     ul {
@@ -143,7 +144,7 @@
 
     #right {
         position: absolute;
-        /*right: -10%;*/
+        right: -7%;
         /*background: #33cccc;*/
         height: 100%;
         width: 50%;
@@ -189,14 +190,14 @@
 </head>
 <body>
 <div id="left">
-<ul>
-    <li><a href="#" id="brand">parkingBuddy</a></li>
-    <li><a href="#" id="tagline">Smart Parking Foreseen</a></li>
-    <li><a href="#" id="login">Login</a></li>
-    <!-- <li><a href="#">Blog</a></li> -->
-</ul>
-<div id="container">
-    <!-- <h1>ParkingBUDDY: Parking Made Easy</h1> -->
+    <ul>
+        <li><a href="#" id="brand">parkingBuddy</a></li>
+        <li><a href="#" id="tagline">Smart Parking Foreseen</a></li>
+        <li><a href="#" id="login">Login</a></li>
+        <!-- <li><a href="#">Blog</a></li> -->
+    </ul>
+    <div id="container">
+<!-- <h1>ParkingBUDDY: Parking Made Easy</h1> -->
     <div>
     <form id="search" action="/search" method="get">
         <p>Heading out?</p>
@@ -209,11 +210,11 @@
         <button class="button" id="submit_parked" type="submit">Remind me</button>
     </form>
     </div>
-    <div id="listing">
+    <div id="listing"></div>
     </div>
 </div>
-</div>
-<div id="right" style="right: -90px;">
+
+<div id="right">
     <div id="mapClaim" class="claim" style="display: block;">
         <h3>FIND AVAILABLE
             <br>
@@ -223,6 +224,7 @@
     </div>
     <div id="map"></div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 
