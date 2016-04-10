@@ -3,15 +3,23 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-class ParkSession(db.Model):
+class ParkingEvent(db.Model):
 
-  __tablename__ = "parksessions"
-  parksession_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  __tablename__ = "parkingevents"
+  parkingevent_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
   floor = db.Column(db.Integer(), nullable=False)
   duration = db.Column(db.Integer(), nullable=False)
-  lat = db.Column(db.Integer(), nullable=False)
-  long = db.Column(db.Integer(), nullable=False)
+  lat = db.Column(db.Float(), nullable=False)
+  long = db.Column(db.Float(), nullable=False)
   time = db.Column(db.String(64), nullable=False)
+
+class Garage(db.Model):
+  __tablename__ = "garages"
+  garage_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  lat = db.Column(db.Float(), nullable=False)
+  long = db.Column(db.Float(), nullable=False)
+  addr = db.Column(db.String(64), nullable=False)
+  price = db.Column(db.Float(), nullable=False)
 
 def connect_to_db(app):
     """Connect the database to Flask app."""

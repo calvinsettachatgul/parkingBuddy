@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from model import connect_to_db, ParkSession
+from model import connect_to_db, ParkingEvent
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
