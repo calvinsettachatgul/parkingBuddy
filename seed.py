@@ -6,7 +6,7 @@ from datetime import datetime
 def load_sessions(file):
   with open(file) as csvfile:
     csvreader = csv.reader(csvfile)
-    next(csvreader)
+    # next(csvreader)
 
 
 
@@ -15,7 +15,6 @@ def load_sessions(file):
   # lat = db.Column(db.Integer(), nullable=False)
   # long = db.Column(db.Integer(), nullable=False)
   # time = db.Column(db.String(64), nullable=False)
-    i=0
     for i, row in enumerate(csvreader):
       newParkingEvent = ParkingEvent(floor=row[0],
                                 duration=row[1],
@@ -33,19 +32,18 @@ def load_sessions(file):
 def load_garages(file):
     with open(file) as csvfile:
       csvreader = csv.reader(csvfile)
-      next(csvreader)
-      i=0
+      # next(csvreader)
       for i, row in enumerate(csvreader):
-       newGarage = Garage(name=row[0],
+        newGarage = Garage(name=row[0],
                                 lat=row[1],
                                 long=row[2],
                                 addr=row[3],
                                 price=row[4],
                                 spaces=row[5]
                                             )
-      db.session.add(newGarage)
-      if i % 10 == 0:
-        print i
+        db.session.add(newGarage)
+        if i % 10 == 0:
+          print i
 
     db.session.commit()
 
