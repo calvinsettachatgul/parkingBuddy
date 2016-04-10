@@ -72,7 +72,9 @@ def makejson():
                             "addr": garage.addr,
                             "price": garage.price,
                             "spaces": garage.spaces,
-                            "scores": score_dict[garage.name]
+                            "scores": score_dict[garage.name],
+                            "marker-symbol": "car",
+                            "marker-color": "#ff5a5f"
                             },
                          "geometry": {
                             "coordinates": [
