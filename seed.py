@@ -15,6 +15,7 @@ def load_sessions(file):
   # lat = db.Column(db.Integer(), nullable=False)
   # long = db.Column(db.Integer(), nullable=False)
   # time = db.Column(db.String(64), nullable=False)
+    i=0
     for i, row in enumerate(csvreader):
       newParkingEvent = ParkingEvent(floor=row[0],
                                 duration=row[1],
@@ -33,6 +34,7 @@ def load_garages(file):
     with open(file) as csvfile:
       csvreader = csv.reader(csvfile)
       next(csvreader)
+      i=0
       for i, row in enumerate(csvreader):
        newGarage = Garage(name=row[0],
                                 lat=row[1],
