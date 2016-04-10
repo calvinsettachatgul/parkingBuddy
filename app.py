@@ -1,6 +1,6 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template,jsonify,redirect
 from flask_sqlalchemy import SQLAlchemy
-from model import connect_to_db, ParkingEvent
+from model import connect_to_db, ParkingEvent, Garage
 import os
 import requests
 
@@ -22,13 +22,21 @@ def index():
   # garagesList = Garage.query.all()
   return render_template("homepage.html", events=parkingevents)
 
+@app.route("/garages")
+def get_garages():
+  print "hello"
+  garageList = Garage.query.all()
+  print garageList
+  return jsonify({"garages": garageList})
+
 @app.route('/automatic_api')
 def get_automatic_json():
-  access_client_id = os.envrion['AUTOMATIC_CLIENT_ID']
+  access_client_id = os.environ['AUTOMATIC_CLIENT_ID']
   access_secret = os.environ['AUTOMATIC_SECRET']
   print access_client_id
   print access_secret
-  return jsonify({json:"hello you got the data"})
+
+  return jsonify({"lat":"hello you got the data"})
 
 
 if __name__ == "__main__":
