@@ -35,9 +35,9 @@ def load_garages(file):
       next(csvreader)
       for i, row in enumerate(csvreader):
         newGarage = Garage(name=row[0],
-                                lat=row[1],
-                                long=row[2],
-                                addr=row[3],
+                                addr=row[1],
+                                lat=row[2],
+                                long=row[3],
                                 price=row[4],
                                 spaces=row[5]
                                             )
