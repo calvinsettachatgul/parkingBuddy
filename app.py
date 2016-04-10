@@ -63,8 +63,18 @@ def makejson():
 
     garage_geojson = {
                      "type": "FeatureCollection",
-                     "features": [
-                        {
+                     "features": []
+                     }
+
+    for garage in garageList:
+      if score_dict[garage.name] <= 10:
+        color = "red"
+      elif score_dict[garage.name] > 10 and score_dict[garage.name] <= 50:
+        color = "orange"
+      else:
+        color = "green"
+
+      single_garage_json = {
                          "type": "Feature",
                          "properties": {
                             "name": garage.name,
@@ -73,7 +83,7 @@ def makejson():
                             "spaces": garage.spaces,
                             "scores": score_dict[garage.name],
                             "marker-symbol": "car",
-                            "marker-color": "#ff5a5f"
+                            "marker-color": color
                             },
                          "geometry": {
                             "coordinates": [
@@ -83,9 +93,8 @@ def makejson():
                             }, 
                          "id": garage.garage_id
                          }
-                    for garage in garageList
-                    ]
-                }
+      garage_geojson["features"].append(single_garage_json)
+      
     return jsonify(garage_geojson)
 
 

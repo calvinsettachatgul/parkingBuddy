@@ -285,6 +285,22 @@ var map = L.mapbox.map('map', 'mapbox.streets')
 var garageLayer = L.mapbox.featureLayer().addTo(map);
 garageLayer.loadURL('/garages.geojson');
 
+garageLayer.on('layeradd', function(e) {
+    var marker = e.layer,
+        feature = marker.feature;
+
+    var popupContent = '<b>' + feature.properties.name + '</b><br><small>' + feature.properties.address + '</small><br>' + '<div>Number of spaces: 'feature.properties.spaces + '</br>' + 'Current parking scores: ' + feature.properties.scores + '</div>';
+
+    marker.bindPopup(popupContent, {
+        closeButton: true,
+        minWidth: 100
+    });
+});
+
+garageLayer.on('mouseover', function(event) {
+    event.layer.openPopup();
+});
+
     $("#right").hover(
         function(){ //mouseenter
             document.getElementById("left").style.opacity = ".6";
