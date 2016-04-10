@@ -12,14 +12,17 @@ class ParkingEvent(db.Model):
   lat = db.Column(db.Float(), nullable=False)
   long = db.Column(db.Float(), nullable=False)
   time = db.Column(db.String(64), nullable=False)
+  arrivDepart = db.Column(db.String(64), nullable=False)
 
 class Garage(db.Model):
   __tablename__ = "garages"
   garage_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  name = db.Column(db.String(64), nullable=False)
   lat = db.Column(db.Float(), nullable=False)
   long = db.Column(db.Float(), nullable=False)
   addr = db.Column(db.String(64), nullable=False)
   price = db.Column(db.Float(), nullable=False)
+  spaces = db.Column(db.Integer, nullable=False)
 
 def connect_to_db(app):
     """Connect the database to Flask app."""
