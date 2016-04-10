@@ -1,4 +1,17 @@
-first garage,37.793755,-122.270019,701 Oak St Oakland CA 94607,1.01,100
-second garage,37.793755,-122.270021,702 Oak St Oakland CA 94607,2.01,200
-third garage,37.793755,-122.270021,703 Oak St Oakland CA 94607,3.01,300
-fourth garage,37.793755,-122.270021,704 Oak St Oakland CA 94607,4.01,400
+Name,Address,Lat,Lng,Price per hour,Number of spaces
+Downtown Merchants Parking Association,"1316 Franklin St, Oakland",37.8033345,-122.2695569,6.00,520
+Rotunda Garage,"1630 San Pablo Ave, Oakland",37.8068827,-122.271832,3.00,330
+Daisies Garage,"250 Frank H Ogawa Plaza, Oakland",37.8060558,-122.272413,4.00,200
+City Center Garage,"525 14th St, Oakland",37.8050534,-122.2730803,6.00,1068
+Clay Street Garage,"1414 Clay St, Oakland",37.805529,-122.273037,4.00,335
+UCOP Garage,"409 12th St, Oakland",37.8025004,-122.27095,3.00,145
+Franklin Plaza Garage,"19th St / Franklin St, Oakland",37.8017862,-122.271263,3.00,482
+Trans Pacific Centre,"1000 Broadway, Oakland",37.8015818,-122.2720879,4.00,354
+Kaiser Permanente Garage,"410 19th St, Oakland",37.8074352,-122.2680492,4.00,482
+Star Park Corporation,"1116 Webster St, Oakland",37.8014341,-122.2699835,5.00,80
+Wells Fargo Center,"1901 Harrison St, Oakland",37.8067882,-122.2656097,6.00,237
+Pacific Renaissance Plaza,"388 9th St, Oakland",37.8007587,-122.2712585,2.00,578
+1200 Harrison Garage,"1200 Harrison St, Oakland",37.8016872,-122.268248,2.00,207
+Central Parking System,"1970 Broadway, Oakland ",37.8086745,-122.2680647,5.00,80
+Franklin 88 Garage,"989 Franklin St, Oakland",37.801226,-122.272202,1.50,250
+City Center West Garage,"1250 Martin Luther King Way, Oakland",37.8051446,-122.2761896,4.00,1461
