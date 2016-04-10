@@ -11,5 +11,19 @@
         Time to countdown:<br>
         <input type="text" name="timeToCountdown">
     </form>
+  <ul class=events>
+  {% for event in events %}
+    <li><p>{{ event.lat }}</p> <p>{{ event.long}}</p>
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+    <ul class=garages>
+  {% for garage in garages %}
+    <li><p>{{ garage.lat }}</p> <p>{{ garage.long}}</p>
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
 </body>
 </html>
