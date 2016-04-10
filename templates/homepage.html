@@ -1,15 +1,253 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <title>parkingBuddy</title>
+    <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+    <style>
+
+    html,body { 
+        height: 100%;
+        width: 100%; 
+        margin: 0px; 
+        padding: 0px;
+        font-family: "Lato" ;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #ff5a5f;
+        position: fixed;
+        top: 0;
+        width: 60%;
+    }
+
+    li {
+        display: inline;
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 18px 20px;
+        text-decoration: none;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+
+    li a:hover {
+        /*background: #111;*/
+        cursor: default;
+    }
+
+    #brand {
+        font-size: 18px;
+        font-weight: 700;
+        padding: 18px 14px 18px 28px;
+    }
+
+    #tagline {
+        font-size: 13px;
+        text-transform: uppercase;
+        margin-top: 4px;
+        letter-spacing: 0.7px;
+    }
+
+    li > #login {
+        position: absolute;
+        padding-top: 20px;
+        margin-right: 0;
+        right: 30px;
+        font-weight: 400;
+        font-size: 14px;
+        bottom: 0;
+        top: 0;
+        width: 80px;
+    }
+
+    li > #login:hover {
+        background-color: #ff7e82;
+        cursor: pointer;
+    }
+
+    #left {
+        position: absolute;
+        width: 60%;
+        left: 0;
+        /*z-index: -1;*/
+        transition: all 0.5s ease-in-out;
+    }
+
+    #container {
+        position: relative;
+        padding-left: 22px;
+        margin-top: 50px;
+        padding-top: 20px;
+        padding-left: 5%;
+        overflow: auto;
+
+    }
+
+    .inputbar {
+        display: inline-block;
+        height: 22px;
+        font-size: 14px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 5px;
+        width: 60%;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .button {
+        display: inline-block;
+        height: 45px;
+        font-size: 14px;
+        padding: 10px;
+        width: 125px;
+        border: 2.5px solid #ff5a5f;
+        /*border-color: #ff5a5f;*/
+        /*border-bottom-color: #e00007;*/
+        background-color: #fff;
+        color: #ff5a5f; 
+        margin-top: 5px;
+        margin-left: 5px;
+        /*float: left;*/
+        position: relative;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .button:hover {
+/*        border-color: #ff7e82;
+        border-bottom-color: #fa0008;
+        background-color: #ff7e82;
+*/        
+        background-color: #ff5a5f;
+        color: #fff;
+    }
+
+    form > p {
+        font-weight: 400;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    #right {
+        position: absolute;
+        /*right: -10%;*/
+        /*background: #33cccc;*/
+        height: 100%;
+        width: 50%;
+        display: inline-block;
+        /*opacity: .7;*/
+        transition: all 0.5s ease-in-out;
+    }
+
+    #right:hover {
+        width: 60%;
+        opacity: 1;
+    }
+
+    #map {
+        height: 100%;
+        position: relative;
+    }
+
+    .claim {
+        position: absolute;
+        top: 40%;
+        z-index: 1;
+        left: 25%;
+        height: 125px;
+        width: 300px;
+        padding-top: 10px;
+        background: white;
+        opacity: .9;
+        text-align: center;
+        transition: all 1s ease-in-out;
+    }
+
+    .claim > h3 {
+        font-weight: 400;
+        letter-spacing: 1.5px;
+    }
+
+    .claim > h4 {
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+    </style>
 </head>
 <body>
-    <h1>Hello World! It's parkingBuddy!</h1>
-    <form>
-        Parking Floor:<br>
-        <input type="text" name="parkingFloor"><br>
-        Time to countdown:<br>
-        <input type="text" name="timeToCountdown">
+<div id="left">
+<ul>
+    <li><a href="#" id="brand">parkingBuddy</a></li>
+    <li><a href="#" id="tagline">Smart Parking Foreseen</a></li>
+    <li><a href="#" id="login">Login</a></li>
+    <!-- <li><a href="#">Blog</a></li> -->
+</ul>
+<div id="container">
+    <!-- <h1>ParkingBUDDY: Parking Made Easy</h1> -->
+    <div>
+    <form id="search" action="/search" method="get">
+        <p>Heading out?</p>
+        <input type="text" class="inputbar" name="location" placeholder="Type the address to search nearby available garage"><button class="button" id="submit_location" type="submit">Show me</button><br>
     </form>
+    <form id="parking-info" action="/parking-info" method="get">
+        <p>Just parked?</p>
+        <input type="text" class="inputbar" name="level" placeholder="Which floor did you park?"><br>
+        <input type="text" class="inputbar" name="expiringtime" placeholder="When are you coming back?">
+        <button class="button" id="submit_parked" type="submit">Remind me</button>
+    </form>
+    </div>
+    <div id="listing">
+    </div>
+</div>
+</div>
+<div id="right" style="right: -90px;">
+    <div id="mapClaim" class="claim" style="display: block;">
+        <h3>FIND AVAILABLE
+            <br>
+            PARKING SPACE
+        </h3>
+        <h4>EXPLORE THE MAP</h4>
+    </div>
+    <div id="map"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoidGVycml3bGVlIiwiYSI6ImNpazZlaThsajAwcXdpMm0ycHUyZjhiYjkifQ.zvJK8nAc3HpNOtCAMh5QlQ';
+var map = L.mapbox.map('map', 'mapbox.streets')
+    .setView([37.80, -122.27], 14);
+
+    $("#right").hover(
+        function(){ //mouseenter
+            document.getElementById("left").style.opacity = ".6";
+            document.getElementById("mapClaim").style.display = "none";
+        },
+        function(){ //mouseleave
+            document.getElementById("left").style.opacity = "1";
+            document.getElementById("mapClaim").style.display = "block";
+        });
+
+    $("#submit_location").click(function(event) {
+        event.preventDefault();
+    });
+
+    $("#submit_parked").click(function(event) {
+        event.preventDefault();
+    });
+</script>
 </body>
 </html>
