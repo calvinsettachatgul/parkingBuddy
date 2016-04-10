@@ -1,69 +1,70 @@
 import datetime
 import math
+from model import connect_to_db, ParkingEvent, Garage
 
 # read the garage data
-class GarageData:
-    def __init__(self):
-        self.m = []
-        header = ["name",
-                  "address",
-                  "lat",
-                  "long",
-                  "price",
-                  "spaces"]
-        infile = open("/Users/nathan/code/parkingBuddy/garageData.csv")
-        lines = infile.read().split("\n")
-        lines.pop(0) # remove supplied header line
-        for line in lines:
-            line = line.rstrip()
-            row = {}
-            tokens = line.split(",")
-            if tokens[2][0] == " ": # comma in address field between street and city
-                tokens[1] = ", ".join([tokens[1],
-                                       tokens[2]])
-                del tokens[2]
-            for i in range(len(header)):
-                row[header[i]] = tokens[i]
-            self.m.append(row)
-gd = GarageData()
-print
+# class GarageData:
+#     def __init__(self):
+#         self.m = []
+#         header = ["name",
+#                   "address",
+#                   "lat",
+#                   "long",
+#                   "price",
+#                   "spaces"]
+#         infile = open("./garageData.csv")
+#         lines = infile.read().split("\n")
+#         lines.pop(0) # remove supplied header line
+#         for line in lines:
+#             line = line.rstrip()
+#             row = {}
+#             tokens = line.split(",")
+#             if tokens[2][0] == " ": # comma in address field between street and city
+#                 tokens[1] = ", ".join([tokens[1],
+#                                        tokens[2]])
+#                 del tokens[2]
+#             for i in range(len(header)):
+#                 row[header[i]] = tokens[i]
+#             self.m.append(row)
+# gd = GarageData()
+# print
 
-# read the parking event data
-class ParkingEventData:    
-    def __init__(self):
-        self.m = []
-        header = ["floor",
-                  "duration",
-                  "lat",
-                  "long",
-                  "time",
-                  "arriveDepart"]        
-        infile = open("/Users/nathan/code/parkingBuddy/parkingData.csv")
-        lines = infile.read().split("\n")
-        for line in lines:
-            line = line.rstrip()
-            row = {}
-            tokens = line.split(",")
-            for i in range(len(header)):
-                row[header[i]] = tokens[i]
-            self.m.append(row)
-        # fix time data
-        timestrs = ["2015-04-12T17:45:01.123Z",
-                    "2015-04-12T17:48:01.123Z",
-                    "2015-04-12T18:46:01.123Z",
-                    "2015-04-12T18:55:01.123Z"]
-        for i,row in enumerate(self.m):
-            row["time"] = timestrs[i]
-ped = ParkingEventData()
+# # read the parking event data
+# class ParkingEventData:
+#     def __init__(self):
+#         self.m = []
+#         header = ["floor",
+#                   "duration",
+#                   "lat",
+#                   "long",
+#                   "time",
+#                   "arriveDepart"]
+#         infile = open("/Users/nathan/code/parkingBuddy/parkingData.csv")
+#         lines = infile.read().split("\n")
+#         for line in lines:
+#             line = line.rstrip()
+#             row = {}
+#             tokens = line.split(",")
+#             for i in range(len(header)):
+#                 row[header[i]] = tokens[i]
+#             self.m.append(row)
+#         # fix time data
+#         timestrs = ["2015-04-12T17:45:01.123Z",
+#                     "2015-04-12T17:48:01.123Z",
+#                     "2015-04-12T18:46:01.123Z",
+#                     "2015-04-12T18:55:01.123Z"]
+#         for i,row in enumerate(self.m):
+#             row["time"] = timestrs[i]
+# ped = ParkingEventData()
 
 class Coord:
     def __init__(self, lat, lon):
         self.lat = lat
         self.lon = lon
     def display(self):
-        return str(self.lat) + "," + str(self.lon)    
+        return str(self.lat) + "," + str(self.lon)
     @staticmethod
-    def haversine_distance(a, b): 
+    def haversine_distance(a, b):
         DEG_TO_RAD = math.pi / 180.0
         KM_TO_MILES = 0.621371
         startLat = float(a.lat)
@@ -76,7 +77,7 @@ class Coord:
         # 6378 km is max (equatorial) radius, 6357 km is mean radius,
         # 6357 is min (polar) radius.
         # Calculate the diameter of the earth at the latitude of pt1
-        d = 6378 - 21 * math.sin(startLat * DEG_TO_RAD)    
+        d = 6378 - 21 * math.sin(startLat * DEG_TO_RAD)
         a = math.pow(math.sin(dlat / 2), 2) + \
             math.pow(math.cos(startLat * DEG_TO_RAD), 2) * \
             math.pow(math.sin(dlong / 2), 2)
@@ -90,15 +91,15 @@ class Coord:
         westOk = west <= self.lon
         eastOk = self.lon <= east
         southOk = south <= self.lat
-        northOk = self.lat <= north        
+        northOk = self.lat <= north
         if westOk and eastOk and southOk and northOk:
             rv = True
         return rv
 
 def get_garage_states():
-    # for all garages, find their arrival and departure counts in the 
+    # for all garages, find their arrival and departure counts in the
     #  past hour
-    # currentTime is in the iso format "2015-04-12T18:55:01.123Z"    
+    # currentTime is in the iso format "2015-04-12T18:55:01.123Z"
     parkingEvents = ParkingEvent.query.all()
     garageList = Garage.query.all()
     pct_avail_by_garage_name = {} # percent availability for each garage by its name
@@ -110,7 +111,7 @@ def get_garage_states():
         #currentTimeStr = currentTimeStr.split(".")[0]
         #currentTime_dt = datetime.datetime.strptime(currentTimeStr,fmt)
         currentTime_dt = datetime.datetime.now()
-        oneHourBack_dt = currentTime_dt - datetime.timedelta(hours=1)    
+        oneHourBack_dt = currentTime_dt - datetime.timedelta(hours=1)
         sumArrivalHr = 0
         sumDepartureHr = 0
         for parkingEvent in parkingEvents:
@@ -121,15 +122,15 @@ def get_garage_states():
             #rowtime_dt = datetime.datetime.strptime(timestr,fmt)
             if oneHourBack_dt <= eventTime_dt:
                 # check if within 30 m
-                parkingEventCoord = Coord(float(parkingEvent["lat"]),
-                                          float(parkingEvent["long"]))
+                parkingEventCoord = Coord(float(parkingEvent.lat),
+                                          float(parkingEvent.long))
                 dist_mi = Coord.haversine_distance(garageCoord,
                                                    parkingEventCoord)
                 dist_m = dist_mi * 1609.34
                 if dist_m <= 30:
-                    if parkingEvent["arriveDepart"] == "arrival":
+                    if parkingEvent.arriveDepart == "arrival":
                         sumArrivalHr += 1
-                    if parkingEvent["arriveDepart"] == "departure":
+                    if parkingEvent.arriveDepart == "departure":
                         sumDepartureHr += 1
         diffVehCountHour = sumArrivalHr - sumDepartureHr
         pct_avail = 0
@@ -139,10 +140,10 @@ def get_garage_states():
             pct_avail = 90
         if -5 < diffVehCountHour and diffVehCountHour < 5:
             pct_avail = 90 - (diffVehCountHour + 5)*8
-        pct_avail = 10 + (i%3)*40        
-        pct_avail_by_garage_name[garage["name"]] = pct_avail
-    
-                        
+        pct_avail = 10 + (i%3)*40
+        pct_avail_by_garage_name[garage.name] = pct_avail
+
+
     #rv = json.dumps(pct_avail_by_garage_name)
 #     outfile = open("/Users/nathan/code/parkingBuddy/garage_pct_avail.csv",'wb')
 #     header = ["Garage Name","pct_avail"]
@@ -156,40 +157,40 @@ def get_garage_states():
     return pct_avail_by_garage_name
 
 
-@app.route("/garages.geojson")
-def makejson():
-    """Construct geojson for map markers."""
+# @app.route("/garages.geojson")
+# def makejson():
+#     """Construct geojson for map markers."""
 
-    parkingEvents = ParkingEvent.query.all()
-    garageList = Garage.query.all()
-    score_dict = get_garage_states()
+#     parkingEvents = ParkingEvent.query.all()
+#     garageList = Garage.query.all()
+#     score_dict = get_garage_states()
 
-    garage_geojson = {
-                     "type": "FeatureCollection",
-                     "features": [
-                        {
-                         "type": "Feature",
-                         "properties": {
-                            "name": garage.name,
-                            "addr": garage.addr,
-                            "price": garage.price,
-                            "spaces": garage.spaces,
-                            "scores": score_dict[garage.name]
-                            },
-                         "geometry": {
-                            "coordinates": [
-                                garage.long,
-                                garage.lat],
-                                "type": "Point"
-                            }, 
-                         "id": garage.garage_id
-                         }
-                    for garage in garageList
-                    ]
-                }
-    return jsonify(garage_geojson)
+#     garage_geojson = {
+#                      "type": "FeatureCollection",
+#                      "features": [
+#                         {
+#                          "type": "Feature",
+#                          "properties": {
+#                             "name": garage.name,
+#                             "addr": garage.addr,
+#                             "price": garage.price,
+#                             "spaces": garage.spaces,
+#                             "scores": score_dict[garage.name]
+#                             },
+#                          "geometry": {
+#                             "coordinates": [
+#                                 garage.long,
+#                                 garage.lat],
+#                                 "type": "Point"
+#                             },
+#                          "id": garage.garage_id
+#                          }
+#                     for garage in garageList
+#                     ]
+#                 }
+#     return jsonify(garage_geojson)
 
 
-currentTime = "2015-04-12T18:55:01.123Z"
-pct_avail_by_garage_name = get_garage_states(gd, ped, currentTime)
-print
+# currentTime = "2015-04-12T18:55:01.123Z"
+# pct_avail_by_garage_name = get_garage_states(gd, ped, currentTime)
+# print

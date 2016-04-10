@@ -8,6 +8,7 @@ from requests_oauthlib import OAuth1
 import datetime
 import math
 
+
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
@@ -90,7 +91,7 @@ def makejson():
                                 garage.long,
                                 garage.lat],
                                 "type": "Point"
-                            }, 
+                            },
                          "id": garage.garage_id
                          }
       garage_geojson["features"].append(single_garage_json)
