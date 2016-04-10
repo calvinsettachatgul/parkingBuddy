@@ -48,6 +48,8 @@
     li a:hover {
         /*background: #111;*/
         cursor: default;
+        text-decoration: none;
+        color: white;
     }
 
     #brand {
@@ -65,9 +67,11 @@
 
     li > #login {
         position: absolute;
-        padding-top: 20px;
-        margin-right: 0;
-        right: 30px;
+        padding-top: 22px;
+        padding-right: 70px;
+        padding-left: 30px;
+        margin-right: -2px;
+        right: 40px;
         font-weight: 400;
         font-size: 14px;
         bottom: 0;
@@ -100,7 +104,6 @@
 
     .inputbar {
         display: inline-block;
-        height: 22px;
         font-size: 14px;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -151,6 +154,7 @@
         font-weight: 400;
         letter-spacing: 1px;
         text-transform: uppercase;
+        margin-top: 20px;
     }
 
     #right {
@@ -197,9 +201,36 @@
         font-weight: 300;
         letter-spacing: 1px;
     }
+
+    #automatic-btn {
+        height: 30px;
+        width: auto;
+    }
+
+    .dropdown {
+    position: absolute;
+    right: 33%;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+        padding: 16px 16px;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .show {
+        display: block;
+    }
     </style>
 </head>
-<body class="container-fluid">
+<body>
 <div id="left" >
     <ul>
         <li><a href="#" id="brand">parkingBuddy</a></li>
@@ -207,10 +238,14 @@
         <li><a href="#" id="login">Login</a></li>
         <!-- <li><a href="#">Blog</a></li> -->
     </ul>
+    <div class="dropdown">
+        <div class="dropdown-content">
+            <a href="https://accounts.automatic.com/oauth/authorize/?client_id=14a608f074d95b370e74&response_type=code&scope=scope:public%20scope:user:profile%20scope:location%20scope:vehicle:profile%20scope:vehicle:events%20scope:trip%20scope:behavior" target="_blank"><img id="automatic-btn" src="https://developer.automatic.com/_assets/images/resources/auth-buttons/auth_automatic-login-24-5759c8ffd1.svg"/></a>
+        </div>
+    </div>
     <div id="container">
-<!-- <h1>ParkingBUDDY: Parking Made Easy</h1> -->
-    <a href="https://accounts.automatic.com/oauth/authorize/?client_id=14a608f074d95b370e74&response_type=code&scope=scope:public%20scope:user:profile%20scope:location%20scope:vehicle:profile%20scope:vehicle:events%20scope:trip%20scope:behavior" target="_blank"><img src="https://d1qbqqxx54sk5g.cloudfront.net/website/img/developer/buttons/signin-xlarge@2x.271d1595432a.png"/></a>
 
+<!-- <h1>ParkingBUDDY: Parking Made Easy</h1> -->
     <div>
     <form id="search" action="/search" method="get">
         <p>Heading out?</p>
@@ -264,6 +299,14 @@ var map = L.mapbox.map('map', 'mapbox.streets')
     $("#submit_parked").click(function(event) {
         event.preventDefault();
     });
+
+    $("#login").hover(
+        function(){ //mouseenter
+            $(".dropdown-content").addClass("show");
+        },
+        function(){ //mouseleave
+            $(".dropdown-content").removeClass("show");
+        });
 
     // get current location by HTML5 geolocation API
     var geolocate = document.getElementById("geolocate");
