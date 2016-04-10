@@ -14,6 +14,7 @@ python model.py
 psql parkingbuddy
 
 select * from parkingevents;
+
 select * from garages;
 
 
