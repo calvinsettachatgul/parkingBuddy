@@ -136,6 +136,14 @@
         color: #fff;
     }
 
+    .geolocate-btn {
+        width: auto;
+        margin-left: 0;
+        padding: 0px 58px;
+        cursor: pointer;
+        display: block;
+    }
+
     form > p {
         font-weight: 400;
         letter-spacing: 1px;
@@ -202,6 +210,7 @@
     <form id="search" action="/search" method="get">
         <p>Heading out?</p>
         <input type="text" class="inputbar" name="location" placeholder="Type the address to search nearby available garage"><button class="button" id="submit_location" type="submit">Show me</button><br>
+        <button class="button geolocate-btn" id="geolocate" type="submit">There already? Use Current Location!</button>
     </form>
     <form id="parking-info" action="/parking-info" method="get">
         <p>Just parked?</p>
@@ -250,6 +259,54 @@ var map = L.mapbox.map('map', 'mapbox.streets')
     $("#submit_parked").click(function(event) {
         event.preventDefault();
     });
+
+    // get current location by HTML5 geolocation API
+    var geolocate = document.getElementById("geolocate");
+    var currentLocationLayer = L.mapbox.featureLayer().addTo(map);
+
+    function findCurrentLocation(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        // $('#wait').css("display", "block");
+        map.locate();
+    }
+
+    function addMarker(latlng) {
+        var currentLocationMarker = {
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: [latlng.lng, latlng.lat]
+            },
+            properties: {
+                'title': 'You are here!',
+                'marker-color': '#F03C02',
+                'marker-symbol': 'star'
+            }
+        };
+
+        currentLocationLayer.setGeoJSON(currentLocationMarker).openPopup();
+    }
+
+    // check if browser supports geolocation
+    if (!navigator.geolocation) {
+        geolocate.innerHTML = 'Geolocation is not available';
+    } else {
+        $("#geolocate").on('click', findCurrentLocation);
+    }
+
+    // if location is found, zoom in, add marker.
+    map.on('locationfound', function(event) {
+        map.fitBounds(event.bounds, {
+            maxZoom: 14
+        });
+
+        addMarker(event.latlng);
+
+        geolocate.innerHTML = 'Found you! check out the map';
+
+        // $("#wait").css("display", "none");
+    })
 </script>
 <!-- below will merge after group discussion
  -->
