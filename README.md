@@ -30,6 +30,14 @@ The app also targets at helping people find their cars inside the building and r
 Through the two-day Hackathon the team was able to build up the data model and map, tested it on small dataset to map garages locations. An algorithm was developed to give each garage a score based on vehicle data, reflected by 3 tiers in backend and 3 colors on the interface. The higher the score, the more vehicles have arrived the parking garage than have left, so we predict there is less likelihood to find a parking spot easily in that structure. 
 
 
+**What's Next**
+
+*Connect bigger public datasets of parking spaces
+
+*Learn from historic parking patterns to better predict future parking availability
+
+*Dynamic Parking
+
 **How to run it on local machine**
 
 On your machine: 
