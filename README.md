@@ -8,12 +8,16 @@
 
 The taem chose to dive into a real-life **painful** problem in the San Francisco Bay Area: parking.
 
-Some cases:
+Some painpoints:
+
 1. It's hard to know whether a parking garage is full or not
+
 2. It's hard to remember which floor/where the spot is in a large parking structure
+
 3. It's hard to track what time the spot will be expired sometimes
 
 **The idea**
+
 With public data of local parking garages, we can map nearby parking structures according to users' current location, or their input of destination. 
 
 With real-time event data from Automatic, we can keep track of numbers of vehicles coming in and out from the parking structure in past one hour to predict the parking structure's "fullness". The results will reflect by colors on the map: the darker the color, the fuller the structure is.
