@@ -6,7 +6,7 @@
 
 **Problem Space**
 
-The taem chose to dive into a real-life **painful** problem in the San Francisco Bay Area: parking.
+The team chose to dive into a real-life **painful** problem in the San Francisco Bay Area: parking.
 
 Some painpoints:
 
