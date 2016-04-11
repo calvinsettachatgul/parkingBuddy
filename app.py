@@ -95,7 +95,7 @@ def makejson():
                          "id": garage.garage_id
                          }
       garage_geojson["features"].append(single_garage_json)
-      
+
     return jsonify(garage_geojson)
 
 
